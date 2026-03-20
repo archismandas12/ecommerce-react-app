@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from "react";
 import Skeleton from "react-loading-skeleton";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import Marquee from "react-fast-marquee";
 import { useDispatch } from "react-redux";
 import { addCart } from "../redux/action";
+import { extraProducts } from "../data/extraProducts";
+import { imageOverrides } from "../data/imageOverrides";
 
 import { Footer, Navbar } from "../components";
+import toast from "react-hot-toast";
 
 const Product = () => {
   const { id } = useParams();
@@ -15,6 +18,7 @@ const Product = () => {
   const [loading2, setLoading2] = useState(false);
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const addProduct = (product) => {
     dispatch(addCart(product));
@@ -24,15 +28,34 @@ const Product = () => {
     const getProduct = async () => {
       setLoading(true);
       setLoading2(true);
-      const response = await fetch(`https://fakestoreapi.com/products/${id}`);
-      const data = await response.json();
+      
+      let data;
+      if (parseInt(id) > 20) {
+        data = extraProducts.find((p) => p.id === parseInt(id));
+      } else {
+        const response = await fetch(`https://fakestoreapi.com/products/${id}`);
+        data = await response.json();
+        // Apply image override if one exists for this product
+        if (imageOverrides[data.id]) {
+          data = { ...data, image: imageOverrides[data.id] };
+        }
+      }
       setProduct(data);
       setLoading(false);
-      const response2 = await fetch(
-        `https://fakestoreapi.com/products/category/${data.category}`
-      );
-      const data2 = await response2.json();
-      setSimilarProducts(data2);
+
+      if (parseInt(id) > 20) {
+        const similar = extraProducts.filter(
+          (p) => p.category === data?.category && p.id !== parseInt(id)
+        );
+        setSimilarProducts(similar);
+      } else {
+        const response2 = await fetch(
+          `https://fakestoreapi.com/products/category/${data.category}`
+        );
+        const data2 = await response2.json();
+        const similar = data2.filter((p) => p.id !== parseInt(id));
+        setSimilarProducts(similar);
+      }
       setLoading2(false);
     };
     getProduct();
@@ -130,7 +153,7 @@ const Product = () => {
           <div className="d-flex">
             {similarProducts.map((item) => {
               return (
-                <div key={item.id} className="card mx-4 text-center">
+                <div key={item.id} className="card mx-4 text-center border-0 shadow-sm" onClick={() => navigate("/product/" + item.id)} style={{ cursor: "pointer", transition: "all 0.3s ease", minWidth: "250px" }}>
                   <img
                     className="card-img-top p-3"
                     src={item.image}
@@ -146,16 +169,21 @@ const Product = () => {
                   {/* <ul className="list-group list-group-flush">
                     <li className="list-group-item lead">${product.price}</li>
                   </ul> */}
-                  <div className="card-body">
+                  <div className="card-body px-4 pb-4">
                     <Link
                       to={"/product/" + item.id}
-                      className="btn btn-dark m-1"
+                      className="btn btn-card-primary w-100 mb-2 py-2"
+                      onClick={(e) => e.stopPropagation()}
                     >
                       Buy Now
                     </Link>
                     <button
-                      className="btn btn-dark m-1"
-                      onClick={() => addProduct(item)}
+                      className="btn btn-card-secondary w-100 py-2"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        addProduct(item);
+                        toast.success("Added to cart");
+                      }}
                     >
                       Add to Cart
                     </button>
