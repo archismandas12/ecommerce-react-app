@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useDispatch } from "react-redux";
 import { extraProducts } from "../data/extraProducts";
 import { imageOverrides } from "../data/imageOverrides";
@@ -15,7 +15,7 @@ const Products = () => {
   const [filter, setFilter] = useState(data);
   const [loading, setLoading] = useState(false);
   const [activeCategory, setActiveCategory] = useState("all");
-  let componentMounted = true;
+  const componentMounted = useRef(true);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -28,7 +28,7 @@ const Products = () => {
     const getProducts = async () => {
       setLoading(true);
       const response = await fetch("https://fakestoreapi.com/products/");
-      if (componentMounted) {
+      if (componentMounted.current) {
         let apiData = await response.clone().json();
         // Apply image overrides for API products with mismatched images
         apiData = apiData.map((p) =>
@@ -39,13 +39,13 @@ const Products = () => {
         setFilter(allProducts);
         setLoading(false);
       }
-
-      return () => {
-        componentMounted = false;
-      };
     };
 
     getProducts();
+
+    return () => {
+      componentMounted.current = false;
+    };
   }, []);
 
   const Loading = () => {
