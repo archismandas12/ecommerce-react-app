@@ -67,7 +67,7 @@ const Product = () => {
         <div className="container my-5 py-2">
           <div className="row">
             <div className="col-md-6 py-3">
-              <Skeleton height={400} width={400} />
+              <Skeleton height={300} />
             </div>
             <div className="col-md-6 py-5">
               <Skeleton height={30} width={250} />
@@ -88,34 +88,38 @@ const Product = () => {
     return (
       <>
         <div className="container my-5 py-2">
-          <div className="row">
-            <div className="col-md-6 col-sm-12 py-3">
+          <div className="row align-items-center">
+            <div className="col-md-6 col-sm-12 py-3 text-center">
               <img
-                className="img-fluid"
+                className="img-fluid product-detail-img rounded-3"
                 src={product.image}
                 alt={product.title}
-                width="400px"
-                height="400px"
+                style={{ maxHeight: "450px", objectFit: "contain" }}
               />
             </div>
-            <div className="col-md-6 col-md-6 py-5">
-              <h4 className="text-uppercase text-muted">{product.category}</h4>
+            <div className="col-md-6 col-sm-12 py-4 py-md-5">
+              <h4 className="text-uppercase text-muted" style={{ fontSize: "0.85rem", letterSpacing: "1px" }}>{product.category}</h4>
               <h1 className="display-5">{product.title}</h1>
               <p className="lead">
                 {product.rating && product.rating.rate}{" "}
-                <i className="fa fa-star"></i>
+                <i className="fa fa-star text-warning"></i>
               </p>
-              <h3 className="display-6  my-4">${product.price}</h3>
-              <p className="lead">{product.description}</p>
-              <button
-                className="btn btn-outline-dark"
-                onClick={() => addProduct(product)}
-              >
-                Add to Cart
-              </button>
-              <Link to="/cart" className="btn btn-dark mx-3">
-                Go to Cart
-              </Link>
+              <h3 className="display-6 my-4">${product.price}</h3>
+              <p className="lead" style={{ lineHeight: "1.8" }}>{product.description}</p>
+              <div className="d-flex product-detail-buttons mt-3">
+                <button
+                  className="btn btn-outline-dark px-4 py-2"
+                  onClick={() => {
+                    addProduct(product);
+                    toast.success("Added to cart");
+                  }}
+                >
+                  Add to Cart
+                </button>
+                <Link to="/cart" className="btn btn-dark mx-3 px-4 py-2">
+                  Go to Cart
+                </Link>
+              </div>
             </div>
           </div>
         </div>
@@ -127,19 +131,11 @@ const Product = () => {
     return (
       <>
         <div className="my-4 py-4">
-          <div className="d-flex">
-            <div className="mx-4">
-              <Skeleton height={400} width={250} />
-            </div>
-            <div className="mx-4">
-              <Skeleton height={400} width={250} />
-            </div>
-            <div className="mx-4">
-              <Skeleton height={400} width={250} />
-            </div>
-            <div className="mx-4">
-              <Skeleton height={400} width={250} />
-            </div>
+          <div className="similar-products-grid">
+            <div><Skeleton height={300} /></div>
+            <div><Skeleton height={300} /></div>
+            <div><Skeleton height={300} /></div>
+            <div><Skeleton height={300} /></div>
           </div>
         </div>
       </>
@@ -150,25 +146,21 @@ const Product = () => {
     return (
       <>
         <div className="py-4 my-4">
-          <div className="d-flex">
+          <div className="similar-products-grid">
             {similarProducts.map((item) => {
               return (
-                <div key={item.id} className="card mx-4 text-center border-0 shadow-sm" onClick={() => navigate("/product/" + item.id)} style={{ cursor: "pointer", transition: "all 0.3s ease", minWidth: "250px" }}>
+                <div key={item.id} className="card text-center border-0 shadow-sm" onClick={() => navigate("/product/" + item.id)} style={{ cursor: "pointer", transition: "all 0.3s ease" }}>
                   <img
                     className="card-img-top p-3"
                     src={item.image}
                     alt="Card"
-                    height={300}
-                    width={300}
+                    style={{ height: "250px", objectFit: "contain" }}
                   />
                   <div className="card-body">
-                    <h5 className="card-title">
+                    <h5 className="card-title" style={{ fontSize: "0.95rem" }}>
                       {item.title.substring(0, 15)}...
                     </h5>
                   </div>
-                  {/* <ul className="list-group list-group-flush">
-                    <li className="list-group-item lead">${product.price}</li>
-                  </ul> */}
                   <div className="card-body px-4 pb-4">
                     <Link
                       to={"/product/" + item.id}
@@ -201,9 +193,11 @@ const Product = () => {
       <Navbar />
       <div className="container">
         <div className="row">{loading ? <Loading /> : <ShowProduct />}</div>
-        <div className="row my-5 py-5">
-          <div className="d-none d-md-block">
+        <div className="row my-4 my-md-5 py-3 py-md-5">
+          <div className="">
           <h2 className="">You may also Like</h2>
+          {/* Show marquee only on desktop, grid on mobile/tablet */}
+          <div className="d-none d-lg-block">
             <Marquee
               pauseOnHover={true}
               pauseOnClick={true}
@@ -211,6 +205,10 @@ const Product = () => {
             >
               {loading2 ? <Loading2 /> : <ShowSimilarProduct />}
             </Marquee>
+          </div>
+          <div className="d-lg-none">
+            {loading2 ? <Loading2 /> : <ShowSimilarProduct />}
+          </div>
           </div>
         </div>
       </div>

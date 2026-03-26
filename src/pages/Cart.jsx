@@ -12,9 +12,9 @@ const Cart = () => {
     return (
       <div className="container">
         <div className="row">
-          <div className="col-md-12 py-5 bg-light text-center rounded-4 shadow-sm my-5">
+          <div className="col-12 py-5 bg-light text-center rounded-4 shadow-sm my-5">
             <h4 className="p-3 display-5 fw-bold">Your Cart is Empty</h4>
-            <Link to="/" className="btn btn-outline-dark btn-lg mx-4 mt-3 rounded-3 fw-bold px-5 py-3">
+            <Link to="/" className="btn btn-outline-dark btn-lg mx-2 mt-3 rounded-3 fw-bold px-4 px-md-5 py-3">
               <i className="fa fa-arrow-left me-2"></i> Continue Shopping
             </Link>
           </div>
@@ -44,22 +44,22 @@ const Cart = () => {
     return (
       <>
         <section className="h-100 gradient-custom">
-          <div className="container py-5">
-            <div className="row d-flex justify-content-center my-4">
-              <div className="col-md-8">
+          <div className="container py-3 py-md-5">
+            <div className="row d-flex justify-content-center my-2 my-md-4">
+              <div className="col-lg-8 col-md-7 col-12">
                 <div className="card mb-4 border-0 rounded-4 shadow-sm">
-                  <div className="card-header py-4 bg-white border-0 mt-2">
-                    <h5 className="mb-0 fw-bold fs-4">Item List</h5>
+                  <div className="card-header py-3 py-md-4 bg-white border-0 mt-2">
+                    <h5 className="mb-0 fw-bold fs-5 fs-md-4">Item List</h5>
                   </div>
-                  <div className="card-body px-4 px-md-5">
+                  <div className="card-body px-3 px-md-5">
                     {state.map((item) => {
                       return (
                         <div key={item.id}>
                           <div className="row d-flex align-items-center">
-                            <div className="col-lg-3 col-md-12">
+                            <div className="col-4 col-sm-3 col-lg-3">
                               <div
                                 className="bg-light rounded-3 p-2 d-flex justify-content-center align-items-center"
-                                style={{ height: "120px" }}
+                                style={{ height: "100px" }}
                               >
                                 <img
                                   src={item.image}
@@ -69,16 +69,18 @@ const Cart = () => {
                               </div>
                             </div>
 
-                            <div className="col-lg-5 col-md-6 mt-4 mt-lg-0">
-                              <p>
-                                <strong className="fs-5">{item.title}</strong>
+                            <div className="col-8 col-sm-9 col-lg-5 mt-0">
+                              <p className="mb-1">
+                                <strong className="fs-6 fs-md-5">{item.title}</strong>
+                              </p>
+                              <p className="text-muted mb-0 d-lg-none" style={{ fontSize: "0.85rem" }}>
+                                <span>{item.qty}</span> x ${item.price}
                               </p>
                             </div>
 
-                            <div className="col-lg-4 col-md-6 mt-4 mt-lg-0">
+                            <div className="col-12 col-lg-4 mt-3 mt-lg-0">
                               <div
-                                className="d-flex align-items-center mb-4"
-                                style={{ maxWidth: "300px" }}
+                                className="d-flex align-items-center justify-content-center justify-content-lg-start mb-2"
                               >
                                 <button
                                   className="btn btn-outline-dark px-3 rounded-circle me-3"
@@ -101,7 +103,7 @@ const Cart = () => {
                                 </button>
                               </div>
 
-                              <p className="text-start text-md-center">
+                              <p className="text-center text-lg-start d-none d-lg-block">
                                 <strong>
                                   <span className="text-muted">{item.qty}</span>{" "}
                                   x ${item.price}
@@ -110,19 +112,19 @@ const Cart = () => {
                             </div>
                           </div>
 
-                          <hr className="my-4 text-muted" />
+                          <hr className="my-3 my-md-4 text-muted" />
                         </div>
                       );
                     })}
                   </div>
                 </div>
               </div>
-              <div className="col-md-4">
+              <div className="col-lg-4 col-md-5 col-12">
                 <div className="card mb-4 border-0 rounded-4 shadow-sm">
-                  <div className="card-header py-4 bg-white border-0 mt-2">
-                    <h5 className="mb-0 fw-bold fs-4">Order Summary</h5>
+                  <div className="card-header py-3 py-md-4 bg-white border-0 mt-2">
+                    <h5 className="mb-0 fw-bold fs-5 fs-md-4">Order Summary</h5>
                   </div>
-                  <div className="card-body px-4">
+                  <div className="card-body px-3 px-md-4">
                     <ul className="list-group list-group-flush mb-4">
                       <li className="list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-3">
                         <span className="text-muted">Products ({totalItems})</span>
@@ -134,10 +136,10 @@ const Cart = () => {
                       </li>
                       <li className="list-group-item d-flex justify-content-between align-items-center border-0 px-0 mb-0 pt-3 border-top">
                         <div>
-                          <strong className="fs-5">Total amount</strong>
+                          <strong className="fs-6 fs-md-5">Total amount</strong>
                         </div>
                         <span>
-                          <strong className="fs-4 text-dark">${Math.round(subtotal + shipping)}</strong>
+                          <strong className="fs-5 fs-md-4 text-dark">${Math.round(subtotal + shipping)}</strong>
                         </span>
                       </li>
                     </ul>

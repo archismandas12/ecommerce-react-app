@@ -15,8 +15,8 @@ const AboutPage = () => {
           <div className="col-12 col-md-10">
             <div className="bg-white rounded-4 shadow-sm p-4 p-md-5 mb-5 border-0" style={{ transition: "all 0.3s ease" }}>
               <p className="lead text-center text-muted mb-4" style={{ lineHeight: "1.8", fontSize: "1.1rem" }}>
-                Welcome to <strong>React Ecommerce</strong>, your ultimate destination for modern, trendy, and high-quality products. 
-                Founded with a passion for bringing the best of global fashion and technology right to your doorstep, we pride ourselves 
+                Welcome to <strong>React Ecommerce</strong>, your ultimate destination for modern, trendy, and high-quality products.
+                Founded with a passion for bringing the best of global fashion and technology right to your doorstep, we pride ourselves
                 on offering a diverse collection of items that cater to your everyday needs.
               </p>
               <p className="lead text-center text-muted mb-0" style={{ lineHeight: "1.8", fontSize: "1.1rem" }}>
